@@ -1,0 +1,45 @@
+services:
+    trino:
+        image: trinodb/trino:latest
+        container_name: trino
+        ports:
+            - "8080:8080"
+        volumes:
+            - ./trino:/etc/trino
+            - ./plugin:/usr/lib/trino/plugin
+        environment:
+            CATALOG_MANAGEMENT: dynamic
+        depends_on:
+            - postgres
+            - mysql
+        networks:
+            - trino-network
+
+    postgres:
+        image: postgres:13
+        container_name: trino-postgres
+        environment:
+            POSTGRES_USER: trino
+            POSTGRES_PASSWORD: trino123
+            POSTGRES_DB: analytics
+        ports:
+            - "5432:5432"
+        networks:
+            - trino-network
+
+    mysql:
+        image: mysql:8
+        container_name: trino-mysql
+        environment:
+            MYSQL_ROOT_PASSWORD: rootpass
+            MYSQL_DATABASE: sales
+            MYSQL_USER: trino
+            MYSQL_PASSWORD: trino123
+        ports:
+            - "3306:3306"
+        networks:
+            - trino-network
+
+networks:
+    trino-network:
+        driver: bridge
