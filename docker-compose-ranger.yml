@@ -8,7 +8,7 @@ services:
             - RANGER_VERSION=2.7.0
             - RANGER_DB_TYPE=postgres
         ports:
-            - 8081:6080
+            - 6080:6080
             - 6182:6182
         image: apache/ranger:2.7.0
         command: /home/ranger/scripts/ranger.sh

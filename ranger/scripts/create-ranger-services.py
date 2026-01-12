@@ -4,7 +4,6 @@ from json import JSONDecodeError
 
 ranger_client = RangerClient('http://ranger:6080', ('admin', 'rangerR0cks!'))
 
-
 def service_not_exists(service):
     try:
         svc = ranger_client.get_service(service.name)

@@ -9,8 +9,8 @@ services:
         container_name: trino
         hostname: trino
         ports:
-            - 8080:8080
-            - 8443:8443
+            - 8080:80
+            - 8443:443
         volumes:
             - ./trino:/etc/trino
         environment:
@@ -21,6 +21,8 @@ services:
             - ranger
         networks:
             - trino-network
+            - ranger-network
+            - openldap-network
 
     postgres:
         image: postgres:13

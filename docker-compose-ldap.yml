@@ -18,13 +18,13 @@ services:
       - LDAP_RFC2307BIS_SCHEMA=true
       - LDAP_TLS_VERIFY_CLIENT=never
     networks:
-      - openldap
+      - openldap-network
 
   lam:
     image: ghcr.io/ldapaccountmanager/lam:stable
     container_name: lam
     ports:
-      - 8083:80
+      - 8082:80
     stdin_open: true
     tty: true
     volumes:
@@ -32,7 +32,7 @@ services:
     environment:
       - LAM_SKIP_PRECONFIGURE=true
     networks:
-      - openldap
+      - openldap-network
     depends_on:
       - ldap-db
 
@@ -47,6 +47,6 @@ services:
           MYSQL_PASSWORD: ldap123
           MYSQL_DATABASE: ldap
       networks:
-          - openldap
+          - openldap-network
 networks:
-  openldap:
+  openldap-network:
