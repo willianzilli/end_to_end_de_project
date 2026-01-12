@@ -1,0 +1,52 @@
+services:
+  openldap:
+    image: osixia/openldap:1.5.0
+    container_name: openldap
+    hostname: openldap
+    ports:
+      - 389:389
+      - 636:636
+    volumes:
+      - ./ldap/ldap_db:/var/lib/ldap
+      - ./ldap/ldap_config:/etc/ldap/slapd.d
+    environment:
+      - LDAP_DOMAIN=my-domain.com
+      - LDAP_ORGANISATION=My Domain Com
+      - LDAP_ADMIN_DN=cn=admin,dc=my-domain,dc=com
+      - LDAP_ADMIN_PASSWORD=rangerR0cks!
+      - LDAP_CONFIG_PASSWORD=config
+      - LDAP_RFC2307BIS_SCHEMA=true
+      - LDAP_TLS_VERIFY_CLIENT=never
+    networks:
+      - openldap
+
+  lam:
+    image: ghcr.io/ldapaccountmanager/lam:stable
+    container_name: lam
+    ports:
+      - 8083:80
+    stdin_open: true
+    tty: true
+    volumes:
+      - ./ldap/lam_config/config.cfg:/var/lib/ldap-account-manager/config/config.cfg
+    environment:
+      - LAM_SKIP_PRECONFIGURE=true
+    networks:
+      - openldap
+    depends_on:
+      - ldap-db
+
+  ldap-db:
+      image: mysql:8
+      container_name: ldap-db
+      hostname: ldap-db
+      environment:
+          MYSQL_ROOT_PASSWORD: rootpass
+          # MYSQL_RANDOM_ROOT_PASSWORD: 'no'
+          MYSQL_USER: ldap
+          MYSQL_PASSWORD: ldap123
+          MYSQL_DATABASE: ldap
+      networks:
+          - openldap
+networks:
+  openldap:

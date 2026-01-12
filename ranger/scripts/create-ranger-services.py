@@ -49,10 +49,10 @@ kms = RangerService({'name': 'dev_kms', 'type': 'kms',
                      'configs': {'username': 'keyadmin', 'password': 'rangerR0cks!',
                                  'provider': 'http://ranger-kms:9292'}})
 
-trino = RangerService({'name': 'dev_trino',
+trino = RangerService({'name': 'trino',
                        'type': 'trino',
                        'configs': {
-                           'username': 'trino',
+                           'username': 'admin',
                            'password': '',
                            'jdbc.driverClassName': 'io.trino.jdbc.TrinoDriver',
                            'jdbc.url': 'jdbc:trino://trino:8080'

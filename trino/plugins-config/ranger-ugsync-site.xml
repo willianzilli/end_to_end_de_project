@@ -1,0 +1,68 @@
+<!-- Example for OpenLDAP -->
+<property>
+  <name>ranger.usersync.ldap.url</name>
+  <value>ldap://openldap:389</value>
+</property>
+
+<property>
+  <name>ranger.usersync.ldap.user.searchbase</name>
+  <value>ou=users,dc=my-domain,dc=com</value>
+</property>
+
+<property>
+  <name>ranger.usersync.ldap.user.searchfilter</name>
+  <value>(objectClass=inetOrgPerson)</value>
+</property>
+
+<property>
+  <name>ranger.usersync.ldap.group.searchbase</name>
+  <value>ou=groups,dc=my-domain,dc=com</value>
+</property>
+
+<property>
+  <name>ranger.usersync.ldap.group.searchfilter</name>
+  <value>(objectClass=groupOfNames)</value>
+</property>
+
+<!-- Example for ACTIVE DIRECTORY -->
+<!--
+<property>
+  <name>ranger.usersync.source.impl.class</name>
+  <value>org.apache.ranger.unixusersync.process.LdapUserGroupBuilder</value>
+</property>
+
+<property>
+  <name>ranger.usersync.ldap.url</name>
+  <value>ldaps://ad.empresa.com:636</value>
+</property>
+
+<property>
+  <name>ranger.usersync.ldap.binddn</name>
+  <value>CN=ranger-sync,OU=ServiceAccounts,DC=empresa,DC=com</value>
+</property>
+
+<property>
+  <name>ranger.usersync.ldap.bindpassword</name>
+  <value>senha_segura</value>
+</property>
+
+<property>
+  <name>ranger.usersync.ldap.user.searchbase</name>
+  <value>DC=empresa,DC=com</value>
+</property>
+
+<property>
+  <name>ranger.usersync.ldap.user.searchfilter</name>
+  <value>(objectClass=user)</value>
+</property>
+
+<property>
+  <name>ranger.usersync.ldap.group.searchbase</name>
+  <value>DC=empresa,DC=com</value>
+</property>
+
+<property>
+  <name>ranger.usersync.ldap.group.searchfilter</name>
+  <value>(objectClass=group)</value>
+</property>
+-->

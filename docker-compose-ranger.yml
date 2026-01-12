@@ -1,0 +1,52 @@
+services:
+    ranger:
+        container_name: ranger
+        hostname: ranger
+        networks:
+            - ranger-network
+        environment:
+            - RANGER_VERSION=2.7.0
+            - RANGER_DB_TYPE=postgres
+        ports:
+            - 8081:6080
+            - 6182:6182
+        image: apache/ranger:2.7.0
+        command: /home/ranger/scripts/ranger.sh
+        depends_on:
+            - ranger-zk
+            - ranger-solr
+            - ranger-db
+        volumes:
+            - ./ranger/scripts:/home/ranger/scripts
+            - ./ranger/certificate.pem:/home/ranger/certificate.pem
+
+    ranger-db:
+        container_name: ranger-db
+        networks:
+            - ranger-network
+        healthcheck:
+            test: su -c "pg_isready -q" postgres
+            interval: 10s
+            timeout: 2s
+            retries: "30"
+        image: apache/ranger-db:2.7.0
+
+    ranger-zk:
+        container_name: ranger-zk
+        networks:
+            - ranger-network
+        ports:
+            - 2181:2181
+        image: apache/ranger-zk:2.7.0
+
+    ranger-solr:
+        container_name: ranger-solr
+        networks:
+            - ranger-network
+        ports:
+            - 8983:8983
+        image: apache/ranger-solr:2.7.0
+        command: solr-precreate ranger_audits /opt/solr/server/solr/configsets/ranger_audits/
+
+networks:
+    ranger-network:
