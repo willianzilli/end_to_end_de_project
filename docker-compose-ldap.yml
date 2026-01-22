@@ -1,4 +1,17 @@
 services:
+  ldap-db:
+    image: mysql:8
+    container_name: ldap-db
+    hostname: ldap-db
+    environment:
+        # MYSQL_ROOT_PASSWORD: rootpass
+        MYSQL_RANDOM_ROOT_PASSWORD: 'yes'
+        MYSQL_USER: ldap
+        MYSQL_PASSWORD: ldap123
+        MYSQL_DATABASE: ldap
+    networks:
+        - openldap-network
+
   openldap:
     image: osixia/openldap:1.5.0
     container_name: openldap
@@ -6,25 +19,25 @@ services:
     ports:
       - 389:389
       - 636:636
-    volumes:
-      - ./ldap/ldap_db:/var/lib/ldap
-      - ./ldap/ldap_config:/etc/ldap/slapd.d
     environment:
-      - LDAP_DOMAIN=my-domain.com
-      - LDAP_ORGANISATION=My Domain Com
-      - LDAP_ADMIN_DN=cn=admin,dc=my-domain,dc=com
+      - LDAP_DOMAIN=openldap
+      - LDAP_ORGANISATION=OpenLDAP
+      - LDAP_ADMIN_DN=cn=admin,dc=openldap
       - LDAP_ADMIN_PASSWORD=rangerR0cks!
-      - LDAP_CONFIG_PASSWORD=config
-      - LDAP_RFC2307BIS_SCHEMA=true
-      - LDAP_TLS_VERIFY_CLIENT=never
+      - LDAP_CONFIG_PASSWORD=rangerR0cks!
+      # - LDAP_RFC2307BIS_SCHEMA=true
+      # - LDAP_TLS_VERIFY_CLIENT=never
     networks:
       - openldap-network
+    depends_on:
+      - ldap-db
 
   lam:
     image: ghcr.io/ldapaccountmanager/lam:stable
     container_name: lam
     ports:
       - 8082:80
+      - 8083:443
     stdin_open: true
     tty: true
     volumes:
@@ -34,19 +47,7 @@ services:
     networks:
       - openldap-network
     depends_on:
-      - ldap-db
+      - openldap
 
-  ldap-db:
-      image: mysql:8
-      container_name: ldap-db
-      hostname: ldap-db
-      environment:
-          MYSQL_ROOT_PASSWORD: rootpass
-          # MYSQL_RANDOM_ROOT_PASSWORD: 'no'
-          MYSQL_USER: ldap
-          MYSQL_PASSWORD: ldap123
-          MYSQL_DATABASE: ldap
-      networks:
-          - openldap-network
 networks:
   openldap-network:
