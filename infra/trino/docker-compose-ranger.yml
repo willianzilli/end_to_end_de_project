@@ -8,7 +8,7 @@ services:
             - RANGER_VERSION=2.7.0
             - RANGER_DB_TYPE=postgres
         ports:
-            - 6080:6080
+            - 8082:6080
             - 6182:6182
         image: apache/ranger:2.7.0
         command: /home/ranger/scripts/ranger.sh
@@ -33,18 +33,20 @@ services:
 
     ranger-zk:
         container_name: ranger-zk
+        restart: always
         networks:
             - ranger-network
-        ports:
-            - 2181:2181
+        # ports:
+        #     - 2181:2181
         image: apache/ranger-zk:2.7.0
 
     ranger-solr:
         container_name: ranger-solr
+        restart: always
         networks:
             - ranger-network
-        ports:
-            - 8983:8983
+        # ports:
+        #     - 8983:8983
         image: apache/ranger-solr:2.7.0
         command: solr-precreate ranger_audits /opt/solr/server/solr/configsets/ranger_audits/
 

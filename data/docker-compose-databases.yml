@@ -1,0 +1,31 @@
+services:
+    postgres:
+        image: postgres:13
+        container_name: mydatabase-postgres
+        environment:
+            POSTGRES_USER: trino
+            POSTGRES_PASSWORD: trino123
+            POSTGRES_DB: erp
+        ports:
+            - 5433:5432
+
+    mysql:
+        image: mysql:8
+        container_name: mydatabase-mysql
+        environment:
+            MYSQL_RANDOM_ROOT_PASSWORD: true
+            MYSQL_USER: trino
+            MYSQL_PASSWORD: trino123
+            MYSQL_DATABASE: erp
+        ports:
+            - 3307:3306
+
+    mongo:
+        image: mongo
+        container_name: mydatabase-mongo
+        restart: always
+        environment:
+            MONGO_INITDB_ROOT_USERNAME: trino
+            MONGO_INITDB_ROOT_PASSWORD: trino123
+        ports:
+            - 27018:27017
