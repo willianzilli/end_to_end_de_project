@@ -1,43 +1,29 @@
 <?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
 <configuration xmlns:xi="http://www.w3.org/2001/XInclude">
+  <!-- 1. Enable UserSync -->
   <property>
-    <name>ranger.usersync.ldap.url</name>
-    <value>ldap://openldap:389</value>
-  </property>
-
-  <property>
-    <name>ranger.usersync.ldap.user.searchbase</name>
-    <value>ou=Users,dc=openldap</value>
-  </property>
-
-  <property>
-    <name>ranger.usersync.ldap.user.searchfilter</name>
-    <value>(objectClass=inetOrgPerson)</value>
-  </property>
-
-  <property>
-    <name>ranger.usersync.ldap.group.searchbase</name>
-    <value>ou=Groups,dc=openldap</value>
-  </property>
-
-  <property>
-    <name>ranger.usersync.ldap.group.searchfilter</name>
-    <value>(objectClass=posixGroup)</value>
-  </property>
-
-  <property>
-    <name>ranger.usersync.ldap.binddn</name>
-    <value>CN=admin,OU=Users,DC=openldap</value>
-  </property>
-
-  <property>
-    <name>ranger.usersync.ldap.bindpassword</name>
-    <value>rangerR0cks!</value>
+    <name>ranger.usersync.enabled</name>
+    <value>true</value>
   </property>
 
   <property>
     <name>ranger.usersync.source.impl.class</name>
-    <value>org.apache.ranger.unixusersync.process.LdapUserGroupBuilder</value>
+    <value>org.apache.ranger.unixusersync.process.UnixUserGroupBuilder</value>
+  </property>
+
+  <property>
+    <name>ranger.usersync.group.searchenabled</name>
+    <value>true</value>
+  </property>
+
+  <property>
+    <name>ranger.usersync.minUnixUserIdToSync</name>
+    <value>0</value>
+  </property>
+
+  <property>
+    <name>ranger.usersync.keystore.file</name>
+    <value>/etc/ranger/usersync/conf/keystore.pem</value>
   </property>
 
 </configuration>

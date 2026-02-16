@@ -1,27 +1,73 @@
 services:
     ranger:
-        container_name: ranger
+        user: root
         hostname: ranger
         networks:
             - ranger-network
         environment:
-            - RANGER_VERSION=2.7.0
-            - RANGER_DB_TYPE=postgres
+            RANGER_DB_TYPE: postgres
+            JAVA_OPTS: >
+                -Djavax.net.ssl.keyStore=/home/docker-certificates/keystore.pem
+                -Djavax.net.ssl.trustStore=/home/docker-certificates/truststore.jks
+                -Djavax.net.ssl.trustStorePassword=UnIx529p
         ports:
             - 8082:6080
-            - 6182:6182
         image: apache/ranger:2.7.0
-        command: /home/ranger/scripts/ranger.sh
         depends_on:
             - ranger-zk
             - ranger-solr
             - ranger-db
         volumes:
-            - ./ranger/scripts:/home/ranger/scripts
-            - ./ranger/certificate.pem:/home/ranger/certificate.pem
+            - ranger-hadoop-data:/opt/hadoop
+            - ../certs:/home/docker-certificates
+ 
+    # ranger-usersync:
+    #     user: root
+    #     image: ranger-usersync
+    #     hostname: ranger-usersync
+    #     networks:
+    #         - ranger-network
+    #     depends_on:
+    #         - ranger
+    #     environment:
+    #         ENABLE_FILE_SYNC_SOURCE: true
+    #         HADOOP_HOME: /opt/hadoop
+    #         JAVA_OPTS: >
+    #             -Djavax.net.ssl.keyStore=/home/docker-certificates/keystore.pem
+    #             -Djavax.net.ssl.trustStore=/home/docker-certificates/truststore.jks
+    #             -Djavax.net.ssl.trustStorePassword=UnIx529p
+    #     privileged: true
+    #     volumes:
+    #         - ranger-hadoop-data:/opt/hadoop
+    #         - ./ranger:/home/ranger-data
+    #         - ./ranger/scripts:/home/ranger/scripts
+    #         - ../certs:/home/docker-certificates
+    #     entrypoint: /bin/bash
+    #     command: 
+    #         - -c
+    #         - |
+    #             cp -f /home/ranger-data/ranger-usersync-install.properties /opt/ranger/usersync/install.properties
+    #             /home/ranger/scripts/ranger-usersync.sh
+
+    # ranger-hadoop:
+    #     image: ranger-hadoop
+    #     hostname: ranger-hadoop
+    #     networks:
+    #         - ranger-network
+    #     healthcheck:
+    #         test: "hdfs dfs -ls /hbase"
+    #         interval: 1m30s
+    #         timeout: 10s
+    #         retries: 30
+    #         start_period: 40s
+    #     volumes:
+    #         - ranger-hadoop-data:/opt/hadoop
+    #         - ./ranger/scripts:/home/ranger/scripts
+    #     depends_on:
+    #         - ranger-zk
 
     ranger-db:
-        container_name: ranger-db
+        hostname: ranger-db
         networks:
             - ranger-network
         healthcheck:
@@ -32,8 +78,6 @@ services:
         image: apache/ranger-db:2.7.0
 
     ranger-zk:
-        container_name: ranger-zk
-        restart: always
         networks:
             - ranger-network
         # ports:
@@ -41,8 +85,6 @@ services:
         image: apache/ranger-zk:2.7.0
 
     ranger-solr:
-        container_name: ranger-solr
-        restart: always
         networks:
             - ranger-network
         # ports:
@@ -52,3 +94,7 @@ services:
 
 networks:
     ranger-network:
+
+volumes:
+    ranger-usync-data:
+    ranger-hadoop-data:

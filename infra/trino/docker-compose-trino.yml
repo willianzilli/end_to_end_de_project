@@ -7,13 +7,13 @@ services:
         container_name: trino
         hostname: trino
         volumes:
+            - ../certs:/home/docker-certificates
             - ./trino:/etc/trino
         environment:
             CATALOG_MANAGEMENT: dynamic
         ports:
-            - 8084:443
-        depends_on:
-            - ranger
+            - 8084:80
+            - 44384:443
         networks:
             - trino-network
             - ranger-network

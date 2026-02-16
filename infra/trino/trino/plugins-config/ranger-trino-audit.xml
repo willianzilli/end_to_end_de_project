@@ -17,4 +17,13 @@
     <value></value>
     <description>URL to Solr deployment where the plugin should send access audits to</description>
   </property>
+
+  <property>
+    <name>xasecure.audit.destination.solr.truststore.file</name>
+    <value>/home/docker-certificates/truststore.jks</value>
+  </property>
+  <property>
+    <name>xasecure.audit.destination.solr.truststore.password</name>
+    <value>UnIx529p</value>
+  </property>
 </configuration>

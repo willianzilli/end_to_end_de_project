@@ -26,30 +26,23 @@ fi
 
 if [ "${SETUP_RANGER}" == "true" ]
 then
-  cd "${RANGER_HOME}"/admin || exit
+  cd "${RANGER_HOME}"/usersync || exit
   if ./setup.sh;
   then
     touch "${RANGER_HOME}"/.setupDone
   else
-    echo "Ranger Admin Setup Script didn't complete proper execution."
+    echo "Ranger UserSync Setup Script didn't complete proper execution."
   fi
 fi
 
-cd ${RANGER_HOME}/admin && ./ews/ranger-admin-services.sh start
+cd ${RANGER_HOME}/usersync && ./start.sh
 
-if [ "${SETUP_RANGER}" == "true" ]
-then
-  # Wait for Ranger Admin to become ready
-  sleep 30
-  python3 ${RANGER_SCRIPTS}/create-ranger-services.py
-fi
-
-RANGER_ADMIN_PID=`ps -ef  | grep -v grep | grep -i "org.apache.ranger.server.tomcat.EmbeddedServer" | awk '{print $2}'`
+RANGER_USERSYNC_PID=`ps -ef  | grep -v grep | grep -i "org.apache.ranger.authentication.UnixAuthenticationService" | awk '{print $2}'`
 
 # prevent the container from exiting
-if [ -z "$RANGER_ADMIN_PID" ]
+if [ -z "$RANGER_USERSYNC_PID" ]
 then
-  echo "Ranger Admin process probably exited, no process id found!"
+  echo "The UserSync process probably exited, no process id found!"
 else
-  tail --pid=$RANGER_ADMIN_PID -f /dev/null
+  tail --pid=$RANGER_USERSYNC_PID -f /dev/null
 fi
