@@ -80,15 +80,11 @@ services:
     ranger-zk:
         networks:
             - ranger-network
-        # ports:
-        #     - 2181:2181
         image: apache/ranger-zk:2.7.0
 
     ranger-solr:
         networks:
             - ranger-network
-        # ports:
-        #     - 8983:8983
         image: apache/ranger-solr:2.7.0
         command: solr-precreate ranger_audits /opt/solr/server/solr/configsets/ranger_audits/
 

@@ -1,5 +1,5 @@
-include:
-    - docker-compose-ranger.yml
+# include:
+#     - docker-compose-ranger.yml
 
 services:
     trino:
@@ -7,16 +7,15 @@ services:
         container_name: trino
         hostname: trino
         volumes:
-            - ../certs:/home/docker-certificates
             - ./trino:/etc/trino
+            - ../certs:/home/docker-certificates/
         environment:
             CATALOG_MANAGEMENT: dynamic
         ports:
             - 8084:80
-            - 44384:443
+            - 8443:443
         networks:
             - trino-network
-            - ranger-network
 
 networks:
     trino-network:
