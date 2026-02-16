@@ -3,52 +3,60 @@ services:
     image: mysql:8
     container_name: ldap-db
     hostname: ldap-db
-    restart: always
     environment:
         # MYSQL_ROOT_PASSWORD: rootpass
-        MYSQL_RANDOM_ROOT_PASSWORD: 'yes'
+        MYSQL_RANDOM_ROOT_PASSWORD: yes
         MYSQL_USER: ldap
         MYSQL_PASSWORD: ldap123
         MYSQL_DATABASE: ldap
     networks:
         - openldap-network
+    volumes:
+      - ldap-db:/var/lib/mysql
 
   openldap:
-    image: osixia/openldap:1.5.0
+    image: osixia/openldap:stable
     container_name: openldap
     hostname: openldap
-    restart: always
-    # ports:
-    #   - 389:389
-    #   - 636:636
+    ports:
+      - 389:389
+      - 636:636
     environment:
-      - LDAP_DOMAIN=openldap
-      - LDAP_ORGANISATION=OpenLDAP
-      - LDAP_ADMIN_DN=cn=admin,dc=openldap
-      - LDAP_ADMIN_PASSWORD=rangerR0cks!
-      - LDAP_CONFIG_PASSWORD=rangerR0cks!
-      # - LDAP_RFC2307BIS_SCHEMA=true
-      # - LDAP_TLS_VERIFY_CLIENT=never
+      LDAP_LOG_LEVEL: -1
+      LDAP_DOMAIN: openldap
+      LDAP_ADMIN_PASSWORD: rangerR0cks!
+      LDAP_TLS: true
+      LDAP_TLS_CRT_FILENAME: server.crt
+      LDAP_TLS_KEY_FILENAME: server.key
+      LDAP_TLS_CA_CRT_FILENAME: ca-chain.crt
+      LDAP_TLS_DH_PARAM_FILENAME: dhparam.pem
+    volumes:
+      - ./certs:/container/service/slapd/assets/certs
+      - ./data/slapd/database:/var/lib/ldap
+      - ./data/slapd/config:/etc/ldap/slapd.d
     networks:
       - openldap-network
     depends_on:
-      - ldap-db
+      ldap-db:
+        condition: service_started
 
   lam:
-    image: ghcr.io/ldapaccountmanager/lam:stable
+    image: ghcr.io/ldapaccountmanager/lam:9.4
     container_name: lam
     ports:
       - 8083:80
-    stdin_open: true
-    tty: true
-    volumes:
-      - ./lam_config/config.cfg:/var/lib/ldap-account-manager/config/config.cfg
-    environment:
-      - LAM_SKIP_PRECONFIGURE=true
     networks:
       - openldap-network
     depends_on:
-      - openldap
+      openldap:
+        condition: service_started
+    environment:
+      - LAM_SKIP_PRECONFIGURE=false
+    # volumes:
+      # - ./config:/var/lib/ldap-account-manager/config
 
 networks:
   openldap-network:
+
+volumes:
+  ldap-db:

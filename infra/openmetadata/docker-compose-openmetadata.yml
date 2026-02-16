@@ -19,7 +19,6 @@ services:
     container_name: openmetadata_mysql
     image: docker.getcollate.io/openmetadata/db:1.11.6
     command: "--sort_buffer_size=10M"
-    restart: always
     environment:
       MYSQL_ROOT_PASSWORD: password
     # expose:
@@ -39,7 +38,6 @@ services:
   openmetadata-elasticsearch:
     container_name: openmetadata_elasticsearch
     image: docker.elastic.co/elasticsearch/elasticsearch:8.11.4
-    restart: always
     environment:
       - discovery.type=single-node
       - ES_JAVA_OPTS=-Xms1024m -Xmx1024m
@@ -276,7 +274,6 @@ services:
 
   openmetadata-server:
     container_name: openmetadata_server
-    restart: always
     image: docker.getcollate.io/openmetadata/server:1.11.6
     environment:
       OPENMETADATA_CLUSTER_NAME: ${OPENMETADATA_CLUSTER_NAME:-openmetadata}

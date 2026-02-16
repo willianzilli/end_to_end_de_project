@@ -7,7 +7,7 @@ services:
             POSTGRES_PASSWORD: trino123
             POSTGRES_DB: erp
         ports:
-            - 5433:5432
+            - 5432:5432
 
     mysql:
         image: mysql:8
@@ -18,7 +18,7 @@ services:
             MYSQL_PASSWORD: trino123
             MYSQL_DATABASE: erp
         ports:
-            - 3307:3306
+            - 3306:3306
 
     mongo:
         image: mongo
@@ -28,4 +28,4 @@ services:
             MONGO_INITDB_ROOT_USERNAME: trino
             MONGO_INITDB_ROOT_PASSWORD: trino123
         ports:
-            - 27018:27017
+            - 27017:27017

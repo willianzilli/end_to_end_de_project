@@ -1,0 +1,70 @@
+<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
+<configuration xmlns:xi="http://www.w3.org/2001/XInclude">
+  <!-- 1. Enable UserSync -->
+  <property>
+    <name>ranger.usersync.enabled</name>
+    <value>true</value>
+  </property>
+
+  <property>
+    <name>ranger.usersync.source.impl</name>
+    <value>org.apache.ranger.ugsync.source.LdapUserGroupSource</value>
+  </property>
+
+  <!-- 2. LDAP Connection Settings -->
+  <property>
+    <name>ranger.usersync.ldap.url</name>
+    <value>ldaps://openldap:636</value>
+  </property>
+
+  <property>
+    <name>ranger.usersync.ldap.binddn</name>
+    <value>cn=admin,dc=openldap</value>
+  </property>
+
+  <property>
+    <name>ranger.usersync.ldap.bindpassword</name>
+    <value>rangerR0cks!</value>
+  </property>
+
+  <!-- 3. Define Search Bases -->
+  <property>
+    <name>ranger.usersync.ldap.user.searchbase</name>
+    <value>ou=user,dc=openldap</value>
+  </property>
+
+  <property>
+    <name>ranger.usersync.ldap.group.searchbase</name>
+    <value>ou=group,dc=openldap</value>
+  </property>
+
+  <!-- 4. Attribute Mapping -->
+  <!-- For OpenLDAP with posixGroup: -->
+  <property>
+    <name>ranger.usersync.ldap.user.nameattribute</name>
+    <value>uid</value>
+  </property>
+
+  <property>
+    <name>ranger.usersync.ldap.group.nameattribute</name>
+    <value>cn</value>
+  </property>
+
+  <property>
+    <name>ranger.usersync.ldap.group.memberattributename</name>
+    <value>memberUid</value>
+  </property>
+
+  <!-- If your groups use uniqueMember instead, change the last property accordingly. -->
+  <!-- 5. Sync Behavior -->
+  <property>
+    <name>ranger.usersync.ldap.delta.sync</name>
+    <value>true</value>
+  </property>
+
+  <property>
+    <name>ranger.usersync.sync.interval</name>
+    <value>60000</value> <!-- default 5 minutes equal to 300000 -->
+  </property>
+
+</configuration>
