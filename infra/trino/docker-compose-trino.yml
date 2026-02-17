@@ -1,5 +1,5 @@
-# include:
-#     - docker-compose-ranger.yml
+include:
+    - docker-compose-ranger.yml
 
 services:
     trino:
@@ -16,6 +16,7 @@ services:
             - 8443:443
         networks:
             - trino-network
+            - ranger-network
 
 networks:
     trino-network:
