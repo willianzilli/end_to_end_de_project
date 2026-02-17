@@ -2,7 +2,7 @@
 <configuration xmlns:xi="http://www.w3.org/2001/XInclude">
   <property>
     <name>ranger.plugin.trino.policy.rest.url</name>
-    <value>http://ranger:6080</value>
+    <value>https://ranger:6182</value>
     <description>MANDATORY: a comma separated list of URLs to Apache Ranger instances in a deployment</description>
   </property>
 
@@ -26,13 +26,13 @@
 
   <property>
     <name>ranger.plugin.trino.super.users</name>
-    <value>ranger.trino</value>
+    <value>trino</value>
     <description>Comma separated list of user names. Superusers will be authorized for all accesses, without requiring explicit policy grants.</description>
   </property>
 
   <property>
     <name>ranger.plugin.trino.super.groups</name>
-    <value>ranger.trino</value>
+    <value>ti</value>
     <description>Comma separated list of group names. Users in supergroups will be authorized for all accesses, without requiring explicit policy grants</description>
   </property>
 
@@ -59,19 +59,4 @@
     <value></value>
     <description>Location of keytab file. Example: /etc/trino/trino.keytab</description>
   </property>
-
-  <property>
-    <name>ranger.usersync.group.based.role.assignment.rules</name>
-    <value>
-      admin:ROLE_ADMIN,trino:ROLE_USER
-    </value>
-    <description>Location of keytab file. Example: group1:ROLE_ADMIN,group2:ROLE_USER,group3:ROLE_AUDITOR</description>
-  </property>
-
-  <property>
-    <name>ranger.plugin.util.PolicyRefresher.pollIntervalMs</name>
-    <value>60000</value>
-    <description>Policy refresh interval in milliseconds. Default is 5 minutes (300000 ms)</description>
-  </property>
-
 </configuration>

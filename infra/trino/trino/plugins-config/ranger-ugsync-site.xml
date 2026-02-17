@@ -25,5 +25,4 @@
     <name>ranger.usersync.keystore.file</name>
     <value>/etc/ranger/usersync/conf/keystore.pem</value>
   </property>
-
 </configuration>
