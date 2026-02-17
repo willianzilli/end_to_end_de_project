@@ -31,6 +31,8 @@ then
   ssh-keygen -A
   /usr/sbin/sshd -D &
 
+  service ssh start
+
   # pdsh is unavailable with microdnf in rhel based image.
   echo "ssh" > /etc/pdsh/rcmd_default
 
