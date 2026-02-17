@@ -74,40 +74,35 @@ read -p "Enter SAN file: " san_file
 # echo "Generating certificates for CN=${CN} using SAN file: ${san_file}"
 
 # Generate root private key
-# openssl genrsa -out ca-root.key 2048
+## openssl genrsa -out ca-root.key 2048
 
 # Create self-signed root certificate
-# openssl req -x509 -new -nodes -key ca-root.key -days 3650 -out ca-root.crt -subj "//CN=host.docker.internal"  || exit 1
+## openssl req -x509 -new -nodes -key ca-root.key -days 3650 -out ca-root.crt -subj "//CN=DockerTrino"  || exit 1
 
-# # Generate intermediate private key
-# openssl genrsa -out ca-intermediate.key 4096
 
-# # Create CSR for intermediate CA
-# openssl req -new -key ca-intermediate.key -out ca-intermediate.csr -config $san_file.ca
 
-# # Sign intermediate CA with root CA
-# openssl x509 -req -in ca-intermediate.csr -CA ca-root.crt -CAkey ca-root.key -CAcreateserial -out ca-intermediate.crt -days 1825 -sha256
 
-  # Generate server private key
-openssl genrsa -out server.key 2048
+
+# Generate server private key
+## openssl genrsa -out server.key 2048
 
 # Create CSR for server
 openssl req -new -key server.key -out server.csr -subj "//CN=host.docker.internal" -config $san_file  || exit 1
 
 # Sign server certificate with intermediate CA
-# openssl x509 -req -in server.csr -CA ca-root.crt -CAkey ca-root.key -CAcreateserial -out server.crt -days 825 -sha256 -notext -batch
-openssl x509 -req -in server.csr -CA ca-root.crt -CAkey ca-root.key -CAcreateserial -out server.crt -days 825 -extensions v3_req -extfile ${san_file} || exit 1
+# cat 'authorityKeyIdentifier=keyid,issuer' >> ${san_file}[v3_req]
+openssl x509 -req -in server.csr -CA ca-root.crt -CAkey ca-root.key -CAcreateserial -out server.crt -days 825 -sha256 -extfile ${san_file} || exit 1
 
-# TRUSTSTORE
-keytool -import -trustcacerts -alias ca-root -file ca-root.crt -keystore truststore.jks -storepass UnIx529p
-keytool -import -trustcacerts -alias server-cert -file server.crt -keystore truststore.jks -storepass UnIx529p
-openssl pkcs12 -in truststore.jks -out truststore.pem -nokeys -nodes -storepass UnIx529p
+
 
 # KEYSTORE
-# Generate a new JKS keystore
-openssl pkcs12 -export -in server.crt -inkey server.key -out keystore.p12 -name server-cert -CAfile ca-root.crt -caname root
-keytool -importkeystore -srckeystore keystore.p12 -srcstoretype PKCS12 -destkeystore keystore.jks -deststoretype PKCS12
-openssl pkcs12 -in keystore.p12 -out keystore.pem -nodes
+openssl pkcs12 -export -in server.crt -inkey server.key -certfile ca-root.crt -out server.p12 -name server
+keytool -importkeystore -deststorepass UnIx529p -destkeypass UnIx529p -destkeystore keystore.jks -srckeystore server.p12 -srcstoretype PKCS12 -srcstorepass UnIx529p -alias server
+
+# TRUSTSTORE
+keytool -import -trustcacerts -alias ca -file ca-root.crt -keystore truststore.p12 -storetype PKCS12
+keytool -import -trustcacerts -alias server -file ca-root.crt -keystore truststore.jks
+
 
 # Create a credential file for the keystore
 echo "UnIx529p" > keystore.credential
