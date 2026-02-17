@@ -23,7 +23,6 @@ services:
     mongo:
         image: mongo
         container_name: mydatabase-mongo
-        restart: always
         environment:
             MONGO_INITDB_ROOT_USERNAME: trino
             MONGO_INITDB_ROOT_PASSWORD: trino123
