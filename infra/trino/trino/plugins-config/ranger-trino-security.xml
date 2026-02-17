@@ -2,7 +2,7 @@
 <configuration xmlns:xi="http://www.w3.org/2001/XInclude">
   <property>
     <name>ranger.plugin.trino.policy.rest.url</name>
-    <value>https://ranger:44382</value>
+    <value>http://ranger:6080</value>
     <description>MANDATORY: a comma separated list of URLs to Apache Ranger instances in a deployment</description>
   </property>
 
