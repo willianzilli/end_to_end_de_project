@@ -65,6 +65,12 @@ services:
             - ./ranger/hadoop:/home/ranger/scripts
         depends_on:
             - ranger-zk
+        entrypoint: /bin/bash
+        command: 
+            - -c
+            - |
+                service ssh start
+                /home/ranger/scripts/ranger-hadoop.sh
 
     ranger-db:
         hostname: ranger-db
