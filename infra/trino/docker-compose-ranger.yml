@@ -21,50 +21,50 @@ services:
             - ranger-hadoop-data:/opt/hadoop
             - ../certs:/home/docker-certificates
  
-    # ranger-usersync:
-    #     user: root
-    #     image: ranger-usersync
-    #     hostname: ranger-usersync
-    #     networks:
-    #         - ranger-network
-    #     depends_on:
-    #         - ranger
-    #     environment:
-    #         ENABLE_FILE_SYNC_SOURCE: true
-    #         HADOOP_HOME: /opt/hadoop
-    #         JAVA_OPTS: >
-    #             -Djavax.net.ssl.keyStore=/home/docker-certificates/keystore.pem
-    #             -Djavax.net.ssl.trustStore=/home/docker-certificates/truststore.jks
-    #             -Djavax.net.ssl.trustStorePassword=UnIx529p
-    #     privileged: true
-    #     volumes:
-    #         - ranger-hadoop-data:/opt/hadoop
-    #         - ./ranger:/home/ranger-data
-    #         - ./ranger/scripts:/home/ranger/scripts
-    #         - ../certs:/home/docker-certificates
-    #     entrypoint: /bin/bash
-    #     command: 
-    #         - -c
-    #         - |
-    #             cp -f /home/ranger-data/ranger-usersync-install.properties /opt/ranger/usersync/install.properties
-    #             /home/ranger/scripts/ranger-usersync.sh
+    ranger-usersync:
+        user: root
+        image: ranger-usersync
+        hostname: ranger-usersync
+        networks:
+            - ranger-network
+        depends_on:
+            - ranger
+        environment:
+            ENABLE_FILE_SYNC_SOURCE: true
+            HADOOP_HOME: /opt/hadoop
+            JAVA_OPTS: >
+                -Djavax.net.ssl.keyStore=/home/docker-certificates/keystore.pem
+                -Djavax.net.ssl.trustStore=/home/docker-certificates/truststore.jks
+                -Djavax.net.ssl.trustStorePassword=UnIx529p
+        privileged: true
+        volumes:
+            - ranger-hadoop-data:/opt/hadoop
+            - ./ranger:/home/ranger-data
+            - ./ranger/scripts:/home/ranger/scripts
+            - ../certs:/home/docker-certificates
+        entrypoint: /bin/bash
+        command: 
+            - -c
+            - |
+                cp -f /home/ranger-data/ranger-usersync-install.properties /opt/ranger/usersync/install.properties
+                /home/ranger/scripts/ranger-usersync.sh
 
-    # ranger-hadoop:
-    #     image: ranger-hadoop
-    #     hostname: ranger-hadoop
-    #     networks:
-    #         - ranger-network
-    #     healthcheck:
-    #         test: "hdfs dfs -ls /hbase"
-    #         interval: 1m30s
-    #         timeout: 10s
-    #         retries: 30
-    #         start_period: 40s
-    #     volumes:
-    #         - ranger-hadoop-data:/opt/hadoop
-    #         - ./ranger/scripts:/home/ranger/scripts
-    #     depends_on:
-    #         - ranger-zk
+    ranger-hadoop:
+        image: ranger-hadoop
+        hostname: ranger-hadoop
+        networks:
+            - ranger-network
+        healthcheck:
+            test: "hdfs dfs -ls /hbase"
+            interval: 1m30s
+            timeout: 10s
+            retries: 30
+            start_period: 40s
+        volumes:
+            - ranger-hadoop-data:/opt/hadoop
+            - ./ranger/scripts:/home/ranger/scripts
+        depends_on:
+            - ranger-zk
 
     ranger-db:
         hostname: ranger-db
