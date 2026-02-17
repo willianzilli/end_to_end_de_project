@@ -12,7 +12,6 @@ services:
                 -Djavax.net.ssl.trustStorePassword=UnIx529p
         ports:
             - 8082:6080
-            - 44382:6182
         image: apache/ranger:2.7.0
         depends_on:
             - ranger-zk
@@ -47,8 +46,8 @@ services:
         command: 
             - -c
             - |
-                cp -f /home/ranger-usersync/ranger-usersync-install.properties /opt/ranger/usersync/install.properties
-                /home/ranger/scripts/ranger-usersync.sh
+                cp -f /home/ranger-usersync-data/ranger-usersync-install.properties /opt/ranger/usersync/install.properties
+                /home/ranger-usersync-data/ranger-usersync.sh
 
     ranger-hadoop:
         image: ranger-hadoop
@@ -63,7 +62,7 @@ services:
             start_period: 40s
         volumes:
             - ranger-hadoop-data:/opt/hadoop
-            - ./ranger/scripts/hadoop:/home/ranger/scripts
+            - ./ranger/hadoop:/home/ranger/scripts
         depends_on:
             - ranger-zk
 
