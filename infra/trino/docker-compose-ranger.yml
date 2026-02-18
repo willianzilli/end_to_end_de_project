@@ -65,6 +65,8 @@ services:
             - ./ranger/hadoop:/home/ranger/scripts
         depends_on:
             - ranger-zk
+        environment:
+            PDSH_RCMD_TYPE: ssh
         entrypoint: /bin/bash
         command: 
             - -c
