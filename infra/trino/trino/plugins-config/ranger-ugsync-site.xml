@@ -23,6 +23,6 @@
 
   <property>
     <name>ranger.usersync.keystore.file</name>
-    <value>/etc/ranger/usersync/conf/keystore.pem</value>
+    <value>/home/docker-certificates/keystore.pem</value>
   </property>
 </configuration>

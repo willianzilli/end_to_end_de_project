@@ -3,7 +3,7 @@
   <!-- properties used for 2-way SSL between the Trino plugin and Apache Ranger server -->
   <property>
     <name>xasecure.policymgr.clientssl.keystore</name>
-    <value></value>
+    <value>/home/docker-certificates/keystore.jks</value>
     <description>Path to keystore file. Only required for two-way SSL. This property should not be included for one-way SSL</description>
   </property>
 
@@ -15,13 +15,13 @@
 
   <property>
     <name>xasecure.policymgr.clientssl.keystore.credential.file</name>
-    <value></value>
+    <value>/home/docker-certificates/keystore.credential</value>
     <description>Path to credential file for the keystore; the credential should be in alias sslKeyStore. Only required for two-way SSL. This property should not be included for one-way SSL</description>
   </property>
   
   <property>
     <name>xasecure.policymgr.clientssl.truststore</name>
-    <value></value>
+    <value>/home/docker-certificates/truststore.jks</value>
     <description>Path to truststore file</description>
   </property>
 
@@ -33,7 +33,7 @@
 
   <property>
     <name>xasecure.policymgr.clientssl.truststore.credential.file</name>
-    <value></value>
+    <value>/home/docker-certificates/truststore.credential</value>
     <description>Path to credential file for the truststore; the credential should be in alias sslTrustStore</description>
   </property>
 </configuration>
