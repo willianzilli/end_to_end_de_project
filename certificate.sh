@@ -112,3 +112,4 @@ echo "UnIx529p" > truststore.credential
 
 
 # keytool -list -v -keystore keystore.jks -storepass UnIx529p
+# keytool -list -v -keystore truststore.jks -storepass UnIx529p

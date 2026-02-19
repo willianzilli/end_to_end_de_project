@@ -7,7 +7,8 @@ services:
         environment:
             RANGER_DB_TYPE: postgres
             JAVA_OPTS: >
-                -Djavax.net.ssl.keyStore=/home/docker-certificates/keystore.pem
+                -Djavax.net.ssl.keyStore=/home/docker-certificates/keystore.jks
+                -Djavax.net.ssl.keyStorePassword=UnIx529p
                 -Djavax.net.ssl.trustStore=/home/docker-certificates/truststore.jks
                 -Djavax.net.ssl.trustStorePassword=UnIx529p
         ports:
@@ -34,7 +35,8 @@ services:
             ENABLE_FILE_SYNC_SOURCE: true
             HADOOP_HOME: /opt/hadoop
             JAVA_OPTS: >
-                -Djavax.net.ssl.keyStore=/home/docker-certificates/keystore.pem
+                -Djavax.net.ssl.keyStore=/home/docker-certificates/keystore.jks
+                -Djavax.net.ssl.keyStorePassword=UnIx529p
                 -Djavax.net.ssl.trustStore=/home/docker-certificates/truststore.jks
                 -Djavax.net.ssl.trustStorePassword=UnIx529p
         privileged: true

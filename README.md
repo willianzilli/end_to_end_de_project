@@ -19,7 +19,7 @@ openssl s_client -connect openldap:636 -CAfile /container/service/slapd/assets/c
 openssl s_client -connect openldap:636 -CAfile /etc/openldap/certs/ca-chain.crt
 
 # teste trino connection via ssh
-trino --server http://trino:80 --user trino --execute "SHOW CATALOGS"
+trino --server http://trino:80 --user test --execute "SHOW CATALOGS"
 
 # OpenMetadata access
 trino@willianzilli.com.br
