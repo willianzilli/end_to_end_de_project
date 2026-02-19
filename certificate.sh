@@ -111,5 +111,11 @@ echo "UnIx529p" > keystore.credential
 echo "UnIx529p" > truststore.credential
 
 
+keytool -genseckey -alias server -keyalg AES -keysize 256 -storetype jceks -keystore keystore.jceks -storepass UnIx529p
+keytool -importkeystore -srckeystore keystore.jceks -destkeystore keystore.jceks -deststoretype pkcs12 -storepass UnIx529p
+
+keytool -genseckey -alias server -keyalg AES -keysize 256 -storetype jceks -keystore truststore.jceks -storepass UnIx529p
+keytool -importkeystore -srckeystore truststore.jceks -destkeystore truststore.jceks -deststoretype pkcs12 -storepass UnIx529p
+
 # keytool -list -v -keystore keystore.jks -storepass UnIx529p
 # keytool -list -v -keystore truststore.jks -storepass UnIx529p

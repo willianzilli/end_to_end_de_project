@@ -1,20 +1,53 @@
 <?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
 <configuration xmlns:xi="http://www.w3.org/2001/XInclude">
-  <property>
-    <name>xasecure.audit.is.enabled</name>
-    <value>true</value>
-    <description>Boolean flag to specify if the plugin should generate access audit logs. Default: true</description>
-  </property>
+    <property>
+        <name>xasecure.audit.is.enabled</name>
+        <value>true</value>
+    </property>
+    
+    <property>
+        <name>xasecure.audit.trino.is.enabled</name>
+        <value>false</value>
+    </property>
 
-  <property>
-    <name>xasecure.audit.solr.is.enabled</name>
-    <value>false</value>
-    <description>Boolean flag to specify if audit logs should be stored in Solr. Default: false</description>
-  </property>
+    <property>
+        <name>xasecure.audit.trino.async.max.queue.size</name>
+        <value>1</value>
+    </property>
 
-  <property>
-    <name>xasecure.audit.solr.solr_url</name>
-    <value></value>
-    <description>URL to Solr deployment where the plugin should send access audits to</description>
-  </property>
+    <property>
+        <name>xasecure.audit.trino.async.max.flush.interval.ms</name>
+        <value>1000</value>
+    </property>
+
+    <property>
+        <name>xasecure.audit.trino.broker_list</name>
+        <value>ranger-solr:9092</value>
+    </property>
+
+    <property>
+        <name>xasecure.audit.trino.topic_name</name>
+        <value>ranger_audits</value>
+    </property>
+
+    <!-- Ranger audit provider configuration -->
+    <property>
+        <name>xasecure.audit.solr.is.enabled</name>
+        <value>false</value>
+    </property>
+
+    <property>
+        <name>xasecure.audit.solr.async.max.queue.size</name>
+        <value>1</value>
+    </property>
+
+    <property>
+        <name>xasecure.audit.solr.async.max.flush.interval.ms</name>
+        <value>1000</value>
+    </property>
+
+    <property>
+        <name>xasecure.audit.solr.solr_url</name>
+        <value>http://ranger-solr:6083/solr/ranger_audits</value>
+    </property>
 </configuration>
