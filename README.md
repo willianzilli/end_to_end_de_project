@@ -21,6 +21,8 @@ openssl s_client -connect openldap:636 -CAfile /etc/openldap/certs/ca-chain.crt
 # teste trino connection via ssh
 trino --server http://trino:80 --user test --execute "SHOW CATALOGS"
 
+jdbc:trino://trino:8443/?SSL=true&SSLVerification=NONE
+
 # OpenMetadata access
 trino@willianzilli.com.br
 rangerR0cks!
