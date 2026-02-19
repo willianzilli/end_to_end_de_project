@@ -40,7 +40,6 @@ services:
         volumes:
             - ranger-hadoop-data:/opt/hadoop
             - ./ranger/usersync:/home/ranger-usersync-data
-            - ./ranger/scripts:/home/ranger/scripts
             - ../certs:/home/docker-certificates
         entrypoint: /bin/bash
         command: 
@@ -50,6 +49,7 @@ services:
                 /home/ranger-usersync-data/ranger-usersync.sh
 
     ranger-hadoop:
+        user: root
         image: ranger-hadoop
         hostname: ranger-hadoop
         networks:
