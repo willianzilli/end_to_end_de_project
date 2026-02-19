@@ -103,7 +103,7 @@ keytool -genkeypair -alias serverkey -keyalg RSA -keystore keystore.jks -storepa
 keytool -import -alias server -file server.crt -keystore keystore.jks
 
 # TRUSTSTORE
-keytool -import -trustcacerts -alias ca -file ca-root.crt -keystore truststore.jks
+keytool -import -trustcacerts -alias sslTrustStore -file ca-root.crt -keystore truststore.jks
 
 
 # Create a credential file for the keystore
