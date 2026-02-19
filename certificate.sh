@@ -99,6 +99,10 @@ openssl x509 -req -in server.csr -CA ca-root.crt -CAkey ca-root.key -CAcreateser
 openssl pkcs12 -export -in server.crt -inkey server.key -certfile ca-root.crt -out server.p12 -name server
 keytool -importkeystore -deststorepass UnIx529p -destkeypass UnIx529p -destkeystore keystore.jks -srckeystore server.p12 -srcstoretype PKCS12 -srcstorepass UnIx529p -alias server
 
+keytool -genkeypair -alias serverkey -keyalg RSA -keystore keystore.jks -storepass UnIx529p
+keytool -import -alias CA -file ca-root.crt -keystore keystore.jks
+keytool -import -alias server -file server.crt -keystore keystore.jks
+
 # TRUSTSTORE
 keytool -import -trustcacerts -alias ca -file ca-root.crt -keystore truststore.p12 -storetype PKCS12
 keytool -import -trustcacerts -alias server -file ca-root.crt -keystore truststore.jks
@@ -107,3 +111,6 @@ keytool -import -trustcacerts -alias server -file ca-root.crt -keystore truststo
 # Create a credential file for the keystore
 echo "UnIx529p" > keystore.credential
 echo "UnIx529p" > truststore.credential
+
+
+# keytool -list -v -keystore keystore.jks -storepass UnIx529p

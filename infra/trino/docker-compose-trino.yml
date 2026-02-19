@@ -17,6 +17,8 @@ services:
         networks:
             - trino-network
             - ranger-network
+        depends_on:
+            - ranger
 
 networks:
     trino-network:

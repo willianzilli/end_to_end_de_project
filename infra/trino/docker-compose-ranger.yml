@@ -17,6 +17,7 @@ services:
             - ranger-zk
             - ranger-solr
             - ranger-db
+            - ranger-usersync
         volumes:
             - ranger-hadoop-data:/opt/hadoop
             - ../certs:/home/docker-certificates
@@ -28,7 +29,7 @@ services:
         networks:
             - ranger-network
         depends_on:
-            - ranger
+            - ranger-hadoop
         environment:
             ENABLE_FILE_SYNC_SOURCE: true
             HADOOP_HOME: /opt/hadoop
