@@ -14,9 +14,7 @@ ldapsearch -x -H ldaps://host.docker.internal:636 -D "cn=admin,dc=openldap" -w r
 
 ldapsearch -x -H ldaps://openldap:636 -D "cn=admin,dc=openldap" -w rangerR0cks!
 
-openssl s_client -connect openldap:636 -CAfile /container/service/slapd/assets/certs/ca-chain.crt
-openssl s_client -connect openldap:636 -CAfile /container/service/slapd/assets/certs/dhparam.pem
-openssl s_client -connect openldap:636 -CAfile /etc/openldap/certs/ca-chain.crt
+openssl s_client -connect openldap:636 -CAfile /container/service/slapd/assets/certs/ca-root.crt
 
 # teste trino connection via ssh
 trino --server http://trino:80 --user test --execute "SHOW CATALOGS"

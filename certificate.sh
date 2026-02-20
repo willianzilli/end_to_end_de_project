@@ -91,13 +91,14 @@ openssl req -new -key server.key -out server.csr -subj "//CN=host.docker.interna
 
 # Sign server certificate with intermediate CA
 # cat 'authorityKeyIdentifier=keyid,issuer' >> ${san_file}[v3_req]
+# openssl x509 -req -in server.csr -CA ../../certs/ca-root.crt -CAkey ../../certs/ca-root.key -CAcreateserial -out server.crt -days 825 -sha256 -extfile ${san_file} || exit 1
 openssl x509 -req -in server.csr -CA ca-root.crt -CAkey ca-root.key -CAcreateserial -out server.crt -days 825 -sha256 -extfile ${san_file} || exit 1
 
 
 
 # KEYSTORE
-openssl pkcs12 -export -in server.crt -inkey server.key -certfile ca-root.crt -out server.p12 -name server
-keytool -importkeystore -deststorepass UnIx529p -destkeypass UnIx529p -destkeystore keystore.jks -srckeystore server.p12 -srcstoretype PKCS12 -srcstorepass UnIx529p -alias server
+# openssl pkcs12 -export -in server.crt -inkey server.key -certfile ca-root.crt -out server.p12 -name server
+# keytool -importkeystore -deststorepass UnIx529p -destkeypass UnIx529p -destkeystore keystore.jks -srckeystore server.p12 -srcstoretype PKCS12 -srcstorepass UnIx529p -alias server
 
 keytool -genkeypair -alias serverkey -keyalg RSA -keystore keystore.jks -storepass UnIx529p -dname "CN=host.docker.internal, OU=IT, O=Company, L=City, S=State, C=US"
 keytool -import -alias server -file server.crt -keystore keystore.jks
