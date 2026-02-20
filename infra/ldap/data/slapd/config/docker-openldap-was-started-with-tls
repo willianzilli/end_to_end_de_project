@@ -1,4 +1,4 @@
-export PREVIOUS_LDAP_TLS_CA_CRT_PATH=/container/service/slapd/assets/certs/ca-chain.crt
-export PREVIOUS_LDAP_TLS_CRT_PATH=/container/service/slapd/assets/certs/server.crt
-export PREVIOUS_LDAP_TLS_KEY_PATH=/container/service/slapd/assets/certs/server.key
+export PREVIOUS_LDAP_TLS_CA_CRT_PATH=/container/service/slapd/assets/certs/ca-root.crt
+export PREVIOUS_LDAP_TLS_CRT_PATH=/container/service/slapd/assets/certs/openldap.crt
+export PREVIOUS_LDAP_TLS_KEY_PATH=/container/service/slapd/assets/certs/openldap.key
 export PREVIOUS_LDAP_TLS_DH_PARAM_PATH=/container/service/slapd/assets/certs/dhparam.pem
