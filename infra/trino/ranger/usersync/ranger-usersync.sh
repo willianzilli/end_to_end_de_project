@@ -16,6 +16,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+cp -f /home/ranger/scripts/ranger-usersync-install.properties /opt/ranger/usersync/install.properties
 
 if [ ! -e ${RANGER_HOME}/.setupDone ]
 then
@@ -30,6 +31,9 @@ then
   if ./setup.sh;
   then
     touch "${RANGER_HOME}"/.setupDone
+    cp -f /opt/ranger/usersync/conf/ranger-ugsync-site.xml /home/ranger/scripts/ranger-ugsync-site.xml
+    rm -f /opt/ranger/usersync/conf/ranger-ugsync-site.xml
+    ln -s /home/ranger/scripts/ranger-ugsync-site.xml /opt/ranger/usersync/conf/ranger-ugsync-site.xml
   else
     echo "Ranger UserSync Setup Script didn't complete proper execution."
   fi

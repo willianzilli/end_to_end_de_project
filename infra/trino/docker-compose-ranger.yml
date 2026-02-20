@@ -42,14 +42,10 @@ services:
         privileged: true
         volumes:
             - ranger-hadoop-data:/opt/hadoop
-            - ./ranger/usersync:/home/ranger-usersync-data
+            - ./ranger/usersync:/home/ranger/scripts
             - ../certs:/home/docker-certificates
         entrypoint: /bin/bash
-        command: 
-            - -c
-            - |
-                cp -f /home/ranger-usersync-data/ranger-usersync-install.properties /opt/ranger/usersync/install.properties
-                /home/ranger-usersync-data/ranger-usersync.sh
+        command: /home/ranger/scripts/ranger-usersync.sh
 
     ranger-hadoop:
         user: root

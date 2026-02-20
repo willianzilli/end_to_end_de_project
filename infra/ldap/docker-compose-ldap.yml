@@ -15,6 +15,7 @@ services:
       - ldap-db:/var/lib/mysql
 
   openldap:
+    user: root
     image: osixia/openldap:stable
     container_name: openldap
     hostname: openldap
@@ -26,12 +27,14 @@ services:
       LDAP_DOMAIN: openldap
       LDAP_ADMIN_PASSWORD: rangerR0cks!
       LDAP_TLS: true
-      LDAP_TLS_CRT_FILENAME: server.crt
-      LDAP_TLS_KEY_FILENAME: server.key
-      LDAP_TLS_CA_CRT_FILENAME: ca-chain.crt
+      LDAP_TLS_CRT_FILENAME: openldap.crt
+      LDAP_TLS_KEY_FILENAME: openldap.key
+      LDAP_TLS_CA_CRT_FILENAME: ca-root.crt
       LDAP_TLS_DH_PARAM_FILENAME: dhparam.pem
+      LDAP_TLS_VERIFY_CLIENT: never
     volumes:
-      - ./certs:/container/service/slapd/assets/certs
+      - ../certs:/container/service/slapd/assets/certs
+      - ../certs:/home/docker-certificates
       - ./data/slapd/database:/var/lib/ldap
       - ./data/slapd/config:/etc/ldap/slapd.d
     networks:
@@ -39,6 +42,7 @@ services:
     depends_on:
       ldap-db:
         condition: service_started
+        restart: true
 
   lam:
     image: ghcr.io/ldapaccountmanager/lam:9.4
@@ -50,6 +54,7 @@ services:
     depends_on:
       openldap:
         condition: service_started
+        restart: true
     environment:
       - LAM_SKIP_PRECONFIGURE=false
     # volumes:
