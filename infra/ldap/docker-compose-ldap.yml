@@ -42,7 +42,6 @@ services:
     depends_on:
       ldap-db:
         condition: service_started
-        restart: true
 
   lam:
     image: ghcr.io/ldapaccountmanager/lam:9.4
@@ -54,14 +53,14 @@ services:
     depends_on:
       openldap:
         condition: service_started
-        restart: true
     environment:
       - LAM_SKIP_PRECONFIGURE=false
-    # volumes:
-      # - ./config:/var/lib/ldap-account-manager/config
+    volumes:
+      - lam-data:/var/lib/ldap-account-manager/config
 
 networks:
   openldap-network:
 
 volumes:
   ldap-db:
+  lam-data:
