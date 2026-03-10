@@ -23,7 +23,7 @@ services:
       - 389:389
       - 636:636
     environment:
-      LDAP_LOG_LEVEL: -1
+      # LDAP_LOG_LEVEL: -1
       LDAP_DOMAIN: openldap
       LDAP_ADMIN_PASSWORD: rangerR0cks!
       LDAP_TLS: true

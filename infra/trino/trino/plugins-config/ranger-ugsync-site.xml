@@ -32,7 +32,10 @@
     <name>ranger.usersync.sync.source</name>
     <value>ldap</value>
   </property>
-  
+  <property>
+    <name>ranger.usersync.ssl</name>
+    <value>true</value>
+  </property>
   <property>
     <name>ranger.usersync.ldap.binddn</name>
     <value>cn=admin,dc=openldap</value>
@@ -49,11 +52,6 @@
     <name>ranger.usersync.ldap.url</name>
     <value>ldaps://host.docker.internal:636</value>
   </property>
-
-  <property>
-    <name>ranger.usersync.ssl</name>
-    <value>true</value>
-  </property>
   <property>
     <name>ranger.usersync.ldap.referral</name>
     <value>never</value>
@@ -63,12 +61,12 @@
     <value>/home/docker-certificates/keystore.jks</value>
   </property>
   <property>
-    <name>ranger.usersync.truststore.file</name>
-    <value>/home/docker-certificates/truststore.jks</value>
-  </property>
-  <property>
     <name>ranger.usersync.keystore.password</name>
     <value>UnIx529p</value>
+  </property>
+  <property>
+    <name>ranger.usersync.truststore.file</name>
+    <value>/home/docker-certificates/truststore.jks</value>
   </property>
   <property>
     <name>ranger.usersync.truststore.password</name>

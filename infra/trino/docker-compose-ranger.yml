@@ -32,7 +32,7 @@ services:
         depends_on:
             - ranger-hadoop
         environment:
-            ENABLE_FILE_SYNC_SOURCE: true
+            ENABLE_FILE_SYNC_SOURCE: false
             HADOOP_HOME: /opt/hadoop
             JAVA_OPTS: >
                 -Djavax.net.ssl.keyStore=/home/docker-certificates/keystore.jks

@@ -1,6 +1,8 @@
 #  Certificate Generation Script
 # 
-# This script automates the process of generating a certificate chain with a root CA, an intermediate CA, and a server certificate. The script uses OpenSSL to create and sign the certificates.
+# This script automates the process of generating a certificate chain with a root CA, an
+# intermediate CA, and a server certificate. The script uses OpenSSL to create and sign the 
+# certificates.
 # 
 # ## Prerequisites
 # 
@@ -68,39 +70,23 @@
 # - The server certificate is valid for 2.25 years (825 days).
 
 read -p "Enter SAN file: " san_file
-
-# CN = $(grep '^CN' ${san_file} | awk '{print $3}')
-
-# echo "Generating certificates for CN=${CN} using SAN file: ${san_file}"
+read -p "Enter SAN file: " san_root_file
 
 # Generate root private key
-## openssl genrsa -out ca-root.key 2048
-
-# Create self-signed root certificate
-## openssl req -x509 -new -nodes -key ca-root.key -days 3650 -out ca-root.crt -subj "//CN=DockerTrino"  || exit 1
-
-
-
-
-
-# Generate server private key
-## openssl genrsa -out server.key 2048
+openssl genrsa -out ca-root.key 2048
 
 # Create CSR for server
-openssl req -new -key server.key -out server.csr -subj "//CN=host.docker.internal" -config $san_file  || exit 1
+openssl req -new -key server.key -out server.csr -subj "//CN=host.docker.internal" \
+-config ${san_root_file} || exit 1
 
 # Sign server certificate with intermediate CA
 # cat 'authorityKeyIdentifier=keyid,issuer' >> ${san_file}[v3_req]
-# openssl x509 -req -in server.csr -CA ../../certs/ca-root.crt -CAkey ../../certs/ca-root.key -CAcreateserial -out server.crt -days 825 -sha256 -extfile ${san_file} || exit 1
-openssl x509 -req -in server.csr -CA ca-root.crt -CAkey ca-root.key -CAcreateserial -out server.crt -days 825 -sha256 -extfile ${san_file} || exit 1
-
-
+openssl x509 -req -in server.csr -CA ca-root.crt -CAkey ca-root.key -CAcreateserial \
+-out server.crt -days 825 -sha256 -extfile ${san_file} || exit 1
 
 # KEYSTORE
-# openssl pkcs12 -export -in server.crt -inkey server.key -certfile ca-root.crt -out server.p12 -name server
-# keytool -importkeystore -deststorepass UnIx529p -destkeypass UnIx529p -destkeystore keystore.jks -srckeystore server.p12 -srcstoretype PKCS12 -srcstorepass UnIx529p -alias server
-
-keytool -genkeypair -alias serverkey -keyalg RSA -keystore keystore.jks -storepass UnIx529p -dname "CN=host.docker.internal, OU=IT, O=Company, L=City, S=State, C=US"
+keytool -genkeypair -alias serverkey -keyalg RSA -keystore keystore.jks -storepass UnIx529p \
+-dname "CN=host.docker.internal, OU=IT, O=Company, L=City, S=State, C=US"
 keytool -import -alias server -file server.crt -keystore keystore.jks
 
 # TRUSTSTORE
@@ -112,11 +98,18 @@ echo "UnIx529p" > keystore.credential
 echo "UnIx529p" > truststore.credential
 
 
-keytool -genseckey -alias server -keyalg AES -keysize 256 -storetype jceks -keystore keystore.jceks -storepass UnIx529p
-keytool -importkeystore -srckeystore keystore.jceks -destkeystore keystore.jceks -deststoretype pkcs12 -storepass UnIx529p
+keytool -genseckey -alias server -keyalg AES -keysize 256 -storetype jceks 
+-keystore keystore.jceks -storepass UnIx529p
 
-keytool -genseckey -alias server -keyalg AES -keysize 256 -storetype jceks -keystore truststore.jceks -storepass UnIx529p
-keytool -importkeystore -srckeystore truststore.jceks -destkeystore truststore.jceks -deststoretype pkcs12 -storepass UnIx529p
+keytool -importkeystore -srckeystore keystore.jceks -destkeystore keystore.jceks 
+-deststoretype pkcs12 -storepass UnIx529p
+
+
+keytool -genseckey -alias server -keyalg AES -keysize 256 -storetype jceks 
+-keystore truststore.jceks -storepass UnIx529p
+
+keytool -importkeystore -srckeystore truststore.jceks -destkeystore truststore.jceks 
+-deststoretype pkcs12 -storepass UnIx529p
 
 # keytool -list -v -keystore keystore.jks -storepass UnIx529p
 # keytool -list -v -keystore truststore.jks -storepass UnIx529p
