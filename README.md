@@ -14,6 +14,7 @@ ldapsearch -x -H ldaps://host.docker.internal:636 -D "cn=admin,dc=openldap" -w r
 
 ldapsearch -x -H ldaps://openldap:636 -D "cn=admin,dc=openldap" -w rangerR0cks!
 
+
 openssl s_client -connect openldap:636 -CAfile /container/service/slapd/assets/certs/ca-root.crt
 
 ldapsearch \
@@ -45,3 +46,15 @@ rangerR0cks!
 
 admin@open-metadata.org
 admin
+
+
+
+
+
+
+
+
+
+
+
+ldapsearch -x -H ldap://host.docker.internal:389 -D "cn=admin,dc=openldap" -w rangerR0cks! -b "(&(objectClass=posixGroup)(memberUid=azaan.hunter)(cn=trino))"
